@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Caesar Cipher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      async function fetchFrequency(text = "") {
+        const response = await fetch('/frequency', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+
+        const frequencyData = await response.json();
+        const labels = Object.keys(frequencyData);
+        const values = Object.values(frequencyData);
+
+        chart.data.datasets[0].data = values;
+        chart.update();
+      }
+
+      function toggleForms() {
+        const action = document.getElementById("action").value;
+        document.getElementById("encryptForm").style.display = action === "encrypt" ? "block" : "none";
+        document.getElementById("decryptForm").style.display = action === "decrypt" ? "block" : "none";
+      }
+
+      // Inisialisasi chart saat halaman pertama kali dimuat
+      document.addEventListener("DOMContentLoaded", () => {
+        toggleForms();
+
+        const ctx = document.getElementById('frequencyChart').getContext('2d');
+        window.chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+            datasets: [
+              {
+                label: 'Original Message',
+                data: Array(26).fill(0), // Data placeholder
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+              },
+              {
+                label: 'Standard English',
+                data: [8.2, 1.5, 2.8, 4.3, 12.7, 2.2, 2.0, 6.1, 7.0, 0.15, 0.77, 4.0, 2.4, 6.7, 7.5, 1.9, 0.09, 6.0, 6.3, 9.1, 2.8, 1.0, 2.4, 0.15, 2.0, 0.07],
+                backgroundColor: 'rgba(255, 99, 132, 0.6)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Caesar Cipher Encryptor & Decryptor</h1>
+
+      <!-- Dropdown untuk Memilih Aksi -->
+      <label for="action">Choose an action:</label>
+      <select id="action" onchange="toggleForms()">
+        <option value="">-- Select --</option>
+        <option value="encrypt">Encrypt</option>
+        <option value="decrypt">Decrypt</option>
+      </select>
+
+      <!-- Form untuk Enkripsi -->
+      <form id="encryptForm" method="POST" style="display: none;">
+        <h2>Encrypt</h2>
+        <label for="plaintext">Plaintext:</label>
+        <input type="text" id="plaintext" name="plaintext" required />
+        <label for="shift">Shift:</label>
+        <input type="number" id="shift" name="shift" min="1" max="25" required />
+        <button type="submit" name="encrypt">Encrypt</button>
+      </form>
+
+      {% if ciphertext %}
+      <h3>Result (Ciphertext):</h3>
+      <p>{{ ciphertext }}</p>
+      {% endif %}
+
+      <!-- Form untuk Dekripsi -->
+      <form id="decryptForm" method="POST" style="display: none;">
+        <h2>Decrypt</h2>
+        <label for="ciphertext">Ciphertext:</label>
+        <input type="text" id="ciphertext" name="ciphertext" required />
+        <button type="submit" name="decrypt">Decrypt</button>
+      </form>
+
+      {% if predicted_plaintext %}
+      <h3>Result (Predicted Plaintext):</h3>
+      <p id="predicted_plaintext">{{ predicted_plaintext }}</p>
+      <h3>Predicted Shift:</h3>
+      <p>{{ predicted_shift }}</p>
+
+      <!-- Update diagram dengan hasil dekripsi -->
+      <script>
+        fetchFrequency("{{ predicted_plaintext }}");
+      </script>
+      {% endif %}
+
+      <!-- Diagram Frekuensi Karakter -->
+      <h3>Character Frequency Chart</h3>
+      <canvas id="frequencyChart" width="400" height="200"></canvas>
+    </div>
+  </body>
+</html>
