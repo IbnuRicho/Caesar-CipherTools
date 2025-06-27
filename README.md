@@ -32,5 +32,10 @@ The machine learning model used is the Naive Bayes Classifier, which is trained 
 ## 📊 Letter Frequency Visualization
 This application displays a bar chart of letter frequencies using Chart.js, which compares the frequency of letters in the input with the standard English frequency. This feature helps users understand the distribution of letters and supports the decryption process visually.
 
-## 📜 License
-This project is free to use for educational, research, and development purposes. For commercial use, please include proper attribution.
+## 🔗 Links
+- 📂 [GitHub Repository](https://github.com/ibnurico/-HOME-CREDIT-Final-Task-Data-Scientist)
+- 💼 [LinkedIn](https://www.linkedin.com/in/ibnurichokurniawan/)
+
+---
+
+> 🧠 *"With data, we empower financial inclusion and fair credit decisions."*
