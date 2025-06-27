@@ -33,7 +33,7 @@ The machine learning model used is the Naive Bayes Classifier, which is trained 
 This application displays a bar chart of letter frequencies using Chart.js, which compares the frequency of letters in the input with the standard English frequency. This feature helps users understand the distribution of letters and supports the decryption process visually.
 
 ## 🔗 Links
-- 📂 [GitHub Repository](https://github.com/ibnurico/-HOME-CREDIT-Final-Task-Data-Scientist)
+- 📂 [GitHub Repository](https://github.com/IbnuRicho/Caesar-CipherTools)
 - 💼 [LinkedIn](https://www.linkedin.com/in/ibnurichokurniawan/)
 
 ---
